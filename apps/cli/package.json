@@ -1,0 +1,18 @@
+{
+  "name": "@trash-sim/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "trash-sim": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "start": "tsx src/index.ts",
+    "lint": "eslint \"src/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "test": "node -e \"console.log('No tests for CLI yet')\""
+  },
+  "dependencies": {
+    "@trash-sim/game-core": "0.1.0"
+  }
+}

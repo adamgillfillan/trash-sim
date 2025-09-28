@@ -1,0 +1,7 @@
+{
+  "buildCommand": "npm run build --workspace @trash-sim/web",
+  "installCommand": "npm install",
+  "outputDirectory": "apps/web/dist",
+  "framework": "vite",
+  "devCommand": "npm run dev --workspace @trash-sim/web"
+}
