@@ -4,9 +4,9 @@ Card game simulation toolkit for the Trash (Garbage) variant where Jacks are wil
 
 ## Project Structure
 
-- `packages/game-core` – Pure TypeScript engine with run helpers and Vitest coverage.
-- `apps/cli` – Node CLI for batch simulations and optional JSON export.
-- `apps/web` – React + Vite SPA with Tailwind/daisyUI themes and a summary dashboard.
+- `packages/game-core` - Pure TypeScript engine with run helpers and Vitest coverage.
+- `apps/cli` - Node CLI for batch simulations and optional JSON export.
+- `apps/web` - React + Vite SPA with Tailwind/daisyUI themes and a summary dashboard.
 
 ## Prerequisites
 
@@ -24,6 +24,7 @@ npm install
 Most scripts run across workspaces from the repo root:
 
 ```bash
+npm run dev       # Starts the web client in dev mode (proxy to @trash-sim/web)
 npm test          # Runs Vitest in game-core and placeholder scripts elsewhere
 npm run build     # Builds the game core, CLI, and web app
 npm run lint      # Lints all workspaces (if eslint configs are present)
@@ -57,7 +58,13 @@ If `--out <file>` is supplied, a JSON summary file is written containing the sam
 
 ### Web UI
 
-Dev mode:
+Dev mode (repo root shortcut):
+
+```bash
+npm run dev
+```
+
+Direct workspace invocation:
 
 ```bash
 npm run dev --workspace @trash-sim/web
@@ -70,7 +77,7 @@ npm run build --workspace @trash-sim/web
 npx serve apps/web/dist   # or vercel dev, etc.
 ```
 
-The UI supports theme switching via daisyUI and runs simulations (up to ~100k runs) on demand without a worker. Results include probability, expected games, confidence interval, and runtime.
+The UI supports theme switching via daisyUI (including the felt-inspired "Table Felt" default) and runs simulations (up to ~100k runs) on demand without a worker. Results include probability, expected games, confidence interval, and runtime. The layout keeps the settings panel and results summary in a single viewport so you can review the full output without scrolling, and there is space reserved to add more configuration fields or result tiles later.
 
 ## Deployment (Vercel)
 
@@ -104,3 +111,4 @@ After connecting the repo, Vercel will install dependencies, run the configured 
 - Extend the CLI/web to support additional rule variants or multi-player tracking.
 - Add histogram visualisations in the web client.
 - Consider wiring a Web Worker for very large batch sizes in the browser.
+
