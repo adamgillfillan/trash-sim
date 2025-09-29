@@ -81,15 +81,42 @@ The UI supports theme switching via daisyUI (including the felt-inspired "Table 
 
 ## Deployment (Vercel)
 
-A `vercel.json` file is included. Recommended project settings:
+1. Create a free account at https://vercel.com/signup (skip if you already have one).
+2. Install the Vercel CLI locally:
 
-- **Framework:** Vite
-- **Build Command:** `npm run build --workspace @trash-sim/web`
-- **Install Command:** `npm install`
-- **Output Directory:** `apps/web/dist`
-- **Development Command:** `npm run dev --workspace @trash-sim/web`
+```bash
+npm install -g vercel
+```
 
-After connecting the repo, Vercel will install dependencies, run the configured build, and serve the static output from the web app. Every push to `main` will trigger a rebuild, and preview deployments are created for pull requests. Ensure the CI workflow passes before relying on deploys.
+3. Authenticate with Vercel from the repo root:
+
+```bash
+vercel login
+```
+
+4. Link the local project (creates the project if it does not exist yet):
+
+```bash
+vercel link
+```
+
+   When prompted, keep the current directory, select your team or personal account, and use the suggested project name (for example, `trash-sim`).
+
+5. Deploy the production build:
+
+```bash
+vercel --prod
+```
+
+   The CLI reads `vercel.json` for defaults. If Vercel asks for settings, choose:
+   - Framework: Vite
+   - Build command: `npm run build --workspace @trash-sim/web`
+   - Output directory: `apps/web/dist`
+   - Install command: `npm install`
+
+6. (Optional) Connect the GitHub repository inside the Vercel dashboard so future pushes to `main` trigger automatic builds, and preview deployments are created for pull requests.
+
+After the first deploy, use `vercel` for preview deployments and `vercel --prod` for production releases.
 
 ## Continuous Integration
 
