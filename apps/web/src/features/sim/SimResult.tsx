@@ -11,15 +11,18 @@ interface SimulationDisplay {
 interface SimResultProps {
   result: SimulationDisplay | null;
   loading: boolean;
+  className?: string;
 }
 
 const CARD_CLASS =
   "relative overflow-hidden rounded-3xl border border-base-300/70 bg-base-200/95 text-base-content shadow-[0_22px_55px_rgba(7,25,15,0.6)] backdrop-blur-sm";
 
-export default function SimResult({ result, loading }: SimResultProps) {
+export default function SimResult({ result, loading, className }: SimResultProps) {
+  const composedClassName = `${CARD_CLASS} ${className ?? ""}`.trim();
+
   if (loading && !result) {
     return (
-      <section className={CARD_CLASS} aria-busy="true">
+      <section className={composedClassName} aria-busy="true">
         <AccentBar />
         <div className="card-body items-center gap-3 py-12 text-base-content/80">
           <div className="deal-stack" aria-hidden="true">
@@ -35,12 +38,12 @@ export default function SimResult({ result, loading }: SimResultProps) {
 
   if (!result) {
     return (
-      <section className={CARD_CLASS}>
+      <section className={composedClassName}>
         <AccentBar />
-        <div className="card-body gap-4">
+        <div className="card-body gap-4 px-6 py-6 sm:px-7">
           <div className="flex flex-col gap-2">
             <h2 className="text-2xl font-semibold">Results</h2>
-            <p className="text-base-content/75">
+            <p className="text-base-content/70">
               Run a simulation to reveal the odds of a first-turn perfect hand. The stats will appear here once the dealing finishes.
             </p>
           </div>
@@ -56,17 +59,17 @@ export default function SimResult({ result, loading }: SimResultProps) {
   const ciText = ciLow !== null && ciHigh !== null ? `${(ciLow * 100).toFixed(4)}% - ${(ciHigh * 100).toFixed(4)}%` : "n/a";
 
   return (
-    <section className={CARD_CLASS}>
+    <section className={composedClassName}>
       <AccentBar />
-      <div className="card-body gap-6">
+      <div className="card-body gap-5 px-6 py-6 sm:px-7">
         <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
-              <div className="flex items-center gap-2 text-xs uppercase tracking-[0.4em] text-accent/75">
+              <div className="flex items-center gap-2 text-xs uppercase tracking-[0.35em] text-accent/75">
                 <span>Summary</span>
                 {loading ? <span className="loading loading-ring loading-xs text-accent" aria-label="Running simulations" /> : null}
               </div>
-              <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-base-content/75">
+              <div className="mt-1 flex flex-wrap items-center gap-4 text-sm text-base-content/75">
                 <span>Runs: {runs.toLocaleString()}</span>
                 <span>Runtime: {(runtimeMs / 1000).toFixed(2)} seconds</span>
               </div>
@@ -75,7 +78,7 @@ export default function SimResult({ result, loading }: SimResultProps) {
           </div>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]">
           <Stat
             key={`prob-${probabilityPct}`}
             label="Probability"
@@ -116,11 +119,11 @@ interface StatProps {
 
 function Stat({ label, value, icon, highlight = false }: StatProps) {
   const baseClass =
-    "flex h-full flex-col justify-between gap-4 rounded-2xl border border-base-300/60 bg-base-100/90 px-7 py-6 text-base-content shadow-inner ring-1 ring-base-300/40";
-  const className = highlight ? `${baseClass} stat-highlight` : baseClass;
+    "flex h-full flex-col justify-between gap-4 rounded-2xl border border-base-300/60 bg-base-100/90 px-7 py-5 text-base-content shadow-inner ring-1 ring-base-300/40";
+  const statClassName = highlight ? `${baseClass} stat-highlight` : baseClass;
 
   return (
-    <div className={className}>
+    <div className={statClassName}>
       <div className="flex items-center gap-3 text-base-content/80">
         <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent/20 text-accent">{icon}</span>
         <span className="text-sm uppercase tracking-[0.2em]">{label}</span>
