@@ -92,8 +92,8 @@ h6 {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  border: 1px solid rgba(212, 175, 55, 0.25);
-  box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.35);
+  border: 1px solid hsl(var(--a) / 0.25);
+  box-shadow: 0 0 0 0 hsl(var(--a) / 0.35);
   animation: statGlow 900ms ease-out;
   pointer-events: none;
 }
@@ -113,11 +113,13 @@ h6 {
 @keyframes statGlow {
   0% {
     opacity: 0.9;
-    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.35);
+    box-shadow: 0 0 0 0 hsl(var(--a) / 0.35);
   }
   100% {
     opacity: 0;
-    box-shadow: 0 0 0 20px rgba(212, 175, 55, 0);
+    box-shadow: 0 0 0 20px hsl(var(--a) / 0);
   }
 }
+
+/* (CTA glow helpers removed while we ignore glow for now) */
 

@@ -79,7 +79,8 @@ export default function SimResult({ result, loading, className }: SimResultProps
         </div>
 
         <p className="text-sm text-base-content/70">
-          A "perfect" game fills every slot on the opening round with no extra draws. These stats reflect how often that happened in the simulated games.
+          A “perfect” game fills every slot on the opening round with no extra draws. These stats reflect how often that happened
+          in the simulated games.
         </p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]">
           <Stat

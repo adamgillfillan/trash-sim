@@ -93,7 +93,7 @@ export default function SimForm({ defaultRuns, loading, onSubmit, className }: S
       <div className="flex items-center justify-end border-t border-base-300/50 bg-base-100/60 px-6 py-4 sm:px-7">
         <button
           type="submit"
-          className="btn btn-primary gap-2 border-none bg-gradient-to-r from-accent via-accent/90 to-accent/80 text-neutral shadow-[0_12px_24px_rgba(212,175,55,0.35)] transition-transform duration-200 hover:scale-[1.02]"
+          className="btn btn-primary gap-2 border-none bg-gradient-to-r from-accent via-accent/90 to-accent/80 text-neutral shadow-[0_12px_24px_hsl(var(--a)_/_0.35)] transition-transform duration-200 hover:scale-[1.02]"
           disabled={loading}
         >
           <ChipIcon className="h-5 w-5" />
