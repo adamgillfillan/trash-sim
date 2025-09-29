@@ -10,7 +10,7 @@ Card game simulation toolkit for the Trash (Garbage) variant where Jacks are wil
 
 ## Prerequisites
 
-- Node.js 24.x
+- Node.js 22.x (or newer)
 - npm (comes with Node 24)
 
 Install dependencies once at the repo root:
@@ -77,7 +77,7 @@ npm run build --workspace @trash-sim/web
 npx serve apps/web/dist   # or vercel dev, etc.
 ```
 
-The UI supports theme switching via daisyUI (including the felt-inspired "Table Felt" default) and runs simulations (up to ~100k runs) on demand without a worker. Results include probability, expected games, confidence interval, and runtime. The layout keeps the settings panel and results summary in a single viewport so you can review the full output without scrolling, and there is space reserved to add more configuration fields or result tiles later.
+The UI supports theme switching via daisyUI (including the felt-inspired "Table Felt" default) and runs simulations (up to ~100k runs) on demand without a worker. Results include probability, expected games, confidence interval, and runtime. The layout keeps the settings panel and results summary in a single viewport so you can review the full output without scrolling, and there is space reserved to add more configuration fields or result tiles later. By default the model tracks how often a single player completes a perfect first round (fills every slot without drawing additional cards).
 
 ## Deployment (Vercel)
 

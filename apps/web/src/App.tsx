@@ -49,7 +49,10 @@ export default function App() {
               </span>
               <h1 className="mt-3 text-3xl font-semibold sm:text-[2.15rem]">Trash Simulator</h1>
               <p className="mt-1 text-base-content/70">
-                Deal virtual hands and estimate the odds of a first-turn perfect win in the Jack-wild variant.
+                Estimate how many Trash games you need to play before hitting a perfect first round with no extra draws.
+              </p>
+              <p className="mt-2 text-sm text-base-content/60">
+                Assumes a single player, Jacks wild, Queens/Kings dead, and a face-up discard to start.
               </p>
             </div>
             <ThemeToggle />

@@ -46,7 +46,10 @@ export default function SimForm({ defaultRuns, loading, onSubmit, className }: S
           <div>
             <h2 className="text-xl font-semibold">Simulation Settings</h2>
             <p className="text-sm text-base-content/70">
-              Configure how many hands to deal per batch. Higher values smooth the odds but take longer to compute.
+              Choose how many simulated games to deal. Each game asks: did the player fill every slot on the opening round with no extra draws?
+            </p>
+            <p className="text-sm text-base-content/60">
+              More runs produce steadier odds but take longer to compute.
             </p>
           </div>
         </div>
@@ -74,7 +77,7 @@ export default function SimForm({ defaultRuns, loading, onSubmit, className }: S
             />
             <label className="label">
               <span className="label-text-alt text-xs text-base-content/60">
-                Runs per trigger. You can raise this later for higher fidelity.
+                How many games to simulate per click. Increase later for smoother estimates.
               </span>
             </label>
           </div>

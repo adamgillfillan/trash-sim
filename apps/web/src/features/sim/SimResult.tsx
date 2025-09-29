@@ -44,7 +44,7 @@ export default function SimResult({ result, loading, className }: SimResultProps
           <div className="flex flex-col gap-2">
             <h2 className="text-2xl font-semibold">Results</h2>
             <p className="text-base-content/70">
-              Run a simulation to reveal the odds of a first-turn perfect hand. The stats will appear here once the dealing finishes.
+              Run simulations here to estimate how many games you should expect to play before hitting a perfect first round with no extra draws. The numbers will pop in as soon as dealing finishes.
             </p>
           </div>
         </div>
@@ -78,17 +78,20 @@ export default function SimResult({ result, loading, className }: SimResultProps
           </div>
         </div>
 
+        <p className="text-sm text-base-content/70">
+          A "perfect" game fills every slot on the opening round with no extra draws. These stats reflect how often that happened in the simulated games.
+        </p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]">
           <Stat
             key={`prob-${probabilityPct}`}
-            label="Probability"
+            label="Perfect round probability"
             value={`${probabilityPct}%`}
             icon={<SpadeIcon className="h-6 w-6 text-accent" />}
             highlight
           />
           <Stat
             key={`expected-${expectedText}`}
-            label="Expected games to success"
+            label="Expected games until first perfect round"
             value={expectedText}
             icon={<DiamondIcon className="h-6 w-6 text-accent" />}
           />
@@ -100,7 +103,7 @@ export default function SimResult({ result, loading, className }: SimResultProps
           />
           <Stat
             key={`wins-${batch.successes}`}
-            label="First-turn perfect wins"
+            label="Perfect first-round wins"
             value={batch.successes.toLocaleString()}
             icon={<HeartIcon className="h-6 w-6 text-accent" />}
           />
