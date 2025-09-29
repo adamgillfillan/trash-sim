@@ -10,7 +10,9 @@
     "build": "npm run build --workspaces",
     "test": "npm run test --workspaces",
     "lint": "npm run lint --workspaces",
-    "format": "npm run format --workspaces"
+    "format": "npm run format --workspaces",
+    "dev": "npm run dev --workspace @trash-sim/web",
+    "preview": "npm run preview --workspace @trash-sim/web"
   },
   "workspaces": [
     "packages/*",
