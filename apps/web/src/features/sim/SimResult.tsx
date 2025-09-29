@@ -1,4 +1,6 @@
-import type { BatchResult } from '@trash-sim/game-core';
+import type { BatchResult } from "@trash-sim/game-core";
+import { ClubIcon, DiamondIcon, HeartIcon, SpadeIcon } from "../../assets/icons";
+import type { ReactNode } from "react";
 
 interface SimulationDisplay {
   runs: number;
@@ -11,78 +13,140 @@ interface SimResultProps {
   loading: boolean;
 }
 
+const CARD_CLASS =
+  "relative overflow-hidden rounded-3xl border border-base-300/70 bg-base-200/95 text-base-content shadow-[0_22px_55px_rgba(7,25,15,0.6)] backdrop-blur-sm";
+
 export default function SimResult({ result, loading }: SimResultProps) {
   if (loading && !result) {
     return (
-      <div className="card bg-base-200 shadow">
-        <div className="card-body items-center justify-center">
-          <span className="loading loading-bars loading-md" aria-label="Running simulations" />
-          <p className="mt-2 text-sm text-base-content/80">Running simulations...</p>
+      <section className={CARD_CLASS} aria-busy="true">
+        <AccentBar />
+        <div className="card-body items-center gap-3 py-12 text-base-content/80">
+          <div className="deal-stack" aria-hidden="true">
+            <div className="deal-card" />
+            <div className="deal-card" />
+            <div className="deal-card" />
+          </div>
+          <p>Running simulations...</p>
         </div>
-      </div>
+      </section>
     );
   }
 
   if (!result) {
     return (
-      <div className="card bg-base-200 shadow">
-        <div className="card-body">
-          <h2 className="card-title">Results</h2>
-          <p className="text-base-content/70">
-            Run a simulation to see the estimated probability of a first-turn win.
-          </p>
+      <section className={CARD_CLASS}>
+        <AccentBar />
+        <div className="card-body gap-4">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-2xl font-semibold">Results</h2>
+            <p className="text-base-content/75">
+              Run a simulation to reveal the odds of a first-turn perfect hand. The stats will appear here once the dealing finishes.
+            </p>
+          </div>
         </div>
-      </div>
+      </section>
     );
   }
 
   const { batch, runs, runtimeMs } = result;
   const probabilityPct = (batch.probability * 100).toFixed(4);
-  const expectedText = batch.expectedGamesToSuccess
-    ? batch.expectedGamesToSuccess.toFixed(2)
-    : 'Not enough successes';
+  const expectedText = batch.expectedGamesToSuccess ? batch.expectedGamesToSuccess.toFixed(2) : "Not enough successes";
   const [ciLow, ciHigh] = batch.confidenceInterval95 ?? [null, null];
-  const ciText = ciLow !== null && ciHigh !== null
-    ? `${(ciLow * 100).toFixed(4)}% - ${(ciHigh * 100).toFixed(4)}%`
-    : 'n/a';
+  const ciText = ciLow !== null && ciHigh !== null ? `${(ciLow * 100).toFixed(4)}% - ${(ciHigh * 100).toFixed(4)}%` : "n/a";
 
   return (
-    <div className="card bg-base-200 shadow">
-      <div className="card-body gap-4">
-        <div className="flex flex-col gap-1">
-          <div className="card-title flex items-center gap-2">
-            <span>Summary</span>
-            {loading ? (
-              <span className="loading loading-ring loading-xs" aria-label="Running simulations" />
-            ) : null}
+    <section className={CARD_CLASS}>
+      <AccentBar />
+      <div className="card-body gap-6">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <div className="flex items-center gap-2 text-xs uppercase tracking-[0.4em] text-accent/75">
+                <span>Summary</span>
+                {loading ? <span className="loading loading-ring loading-xs text-accent" aria-label="Running simulations" /> : null}
+              </div>
+              <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-base-content/75">
+                <span>Runs: {runs.toLocaleString()}</span>
+                <span>Runtime: {(runtimeMs / 1000).toFixed(2)} seconds</span>
+              </div>
+            </div>
+            <SuitCluster />
           </div>
-          <span className="text-sm text-base-content/70">Runs: {runs.toLocaleString()}</span>
-          <span className="text-sm text-base-content/70">
-            Runtime: {(runtimeMs / 1000).toFixed(2)} seconds
-          </span>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <Stat label="Probability" value={`${probabilityPct}%`} />
-          <Stat label="Expected games to success" value={expectedText} />
-          <Stat label="95% confidence interval" value={ciText} />
-          <Stat label="First-turn perfect wins" value={batch.successes.toLocaleString()} />
+          <Stat
+            key={`prob-${probabilityPct}`}
+            label="Probability"
+            value={`${probabilityPct}%`}
+            icon={<SpadeIcon className="h-6 w-6 text-accent" />}
+            highlight
+          />
+          <Stat
+            key={`expected-${expectedText}`}
+            label="Expected games to success"
+            value={expectedText}
+            icon={<DiamondIcon className="h-6 w-6 text-accent" />}
+          />
+          <Stat
+            key={`ci-${ciText}`}
+            label="95% confidence interval"
+            value={ciText}
+            icon={<ClubIcon className="h-6 w-6 text-accent" />}
+          />
+          <Stat
+            key={`wins-${batch.successes}`}
+            label="First-turn perfect wins"
+            value={batch.successes.toLocaleString()}
+            icon={<HeartIcon className="h-6 w-6 text-accent" />}
+          />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
 interface StatProps {
   label: string;
   value: string;
+  icon: ReactNode;
+  highlight?: boolean;
 }
 
-function Stat({ label, value }: StatProps) {
+function Stat({ label, value, icon, highlight = false }: StatProps) {
+  const baseClass =
+    "flex h-full flex-col justify-between gap-4 rounded-2xl border border-base-300/60 bg-base-100/90 px-7 py-6 text-base-content shadow-inner ring-1 ring-base-300/40";
+  const className = highlight ? `${baseClass} stat-highlight` : baseClass;
+
   return (
-    <div className="rounded-box bg-base-100 p-4">
-      <div className="text-sm text-base-content/70">{label}</div>
-      <div className="text-xl font-semibold">{value}</div>
+    <div className={className}>
+      <div className="flex items-center gap-3 text-base-content/80">
+        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent/20 text-accent">{icon}</span>
+        <span className="text-sm uppercase tracking-[0.2em]">{label}</span>
+      </div>
+      <div className="text-2xl font-semibold leading-tight">{value}</div>
     </div>
   );
 }
+
+function SuitCluster() {
+  return (
+    <div className="flex items-center gap-2 rounded-full border border-accent/35 bg-base-100/60 px-4 py-2 text-accent">
+      <SpadeIcon className="h-4 w-4" />
+      <HeartIcon className="h-4 w-4" />
+      <ClubIcon className="h-4 w-4" />
+      <DiamondIcon className="h-4 w-4" />
+    </div>
+  );
+}
+
+function AccentBar() {
+  return (
+    <span
+      aria-hidden="true"
+      className="absolute inset-x-12 top-0 h-1 rounded-full bg-gradient-to-r from-accent/30 via-accent to-accent/30"
+    />
+  );
+}
+

@@ -1,7 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-const THEMES = ['light', 'dark', 'forest'] as const;
-type Theme = (typeof THEMES)[number];
+const THEMES = [
+  { value: 'tablefelt', label: 'Table Felt' },
+  { value: 'light', label: 'Light' },
+  { value: 'dark', label: 'Dark' },
+  { value: 'forest', label: 'Forest' },
+] as const;
+
+type Theme = (typeof THEMES)[number]['value'];
 const STORAGE_KEY = 'trash-sim-theme';
 
 export default function ThemeToggle() {
@@ -11,6 +17,8 @@ export default function ThemeToggle() {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem(STORAGE_KEY, theme);
   }, [theme]);
+
+  const options = useMemo(() => THEMES, []);
 
   return (
     <label className="form-control w-full max-w-xs">
@@ -22,9 +30,9 @@ export default function ThemeToggle() {
         value={theme}
         onChange={(event) => setTheme(event.target.value as Theme)}
       >
-        {THEMES.map((value) => (
+        {options.map(({ value, label }) => (
           <option key={value} value={value}>
-            {capitalize(value)}
+            {label}
           </option>
         ))}
       </select>
@@ -34,12 +42,9 @@ export default function ThemeToggle() {
 
 function getInitialTheme(): Theme {
   const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-  if (stored && THEMES.includes(stored)) {
+  if (stored && THEMES.some(({ value }) => value === stored)) {
     return stored;
   }
-  return 'light';
+  return 'tablefelt';
 }
 
-function capitalize(value: string): string {
-  return value.charAt(0).toUpperCase() + value.slice(1);
-}
