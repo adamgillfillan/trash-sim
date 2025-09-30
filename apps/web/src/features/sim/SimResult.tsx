@@ -1,5 +1,5 @@
 import type { BatchResult } from "@trash-sim/game-core";
-import { ClubIcon, DiamondIcon, HeartIcon, SpadeIcon } from "../../assets/icons";
+import { ChipIcon, ClubIcon, DiamondIcon, HeartIcon, SpadeIcon } from "../../assets/icons";
 import type { ReactNode } from "react";
 
 interface SimulationDisplay {
@@ -55,6 +55,9 @@ export default function SimResult({ result, loading, className }: SimResultProps
   const { batch, runs, runtimeMs } = result;
   const probabilityPct = (batch.probability * 100).toFixed(4);
   const expectedText = batch.expectedGamesToSuccess ? batch.expectedGamesToSuccess.toFixed(2) : "Not enough successes";
+  const averageRoundsText = batch.averageRoundsToWin !== null
+    ? batch.averageRoundsToWin.toFixed(2)
+    : "Not enough wins";
   const [ciLow, ciHigh] = batch.confidenceInterval95 ?? [null, null];
   const ciText = ciLow !== null && ciHigh !== null ? `${(ciLow * 100).toFixed(4)}% - ${(ciHigh * 100).toFixed(4)}%` : "n/a";
 
@@ -79,7 +82,7 @@ export default function SimResult({ result, loading, className }: SimResultProps
         </div>
 
         <p className="text-sm text-base-content/70">
-          A “perfect” game fills every slot on the opening round with no extra draws. These stats reflect how often that happened
+          A "perfect" game fills every slot on the opening round with no extra draws. These stats reflect how often that happened
           in the simulated games.
         </p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]">
@@ -89,6 +92,12 @@ export default function SimResult({ result, loading, className }: SimResultProps
             value={`${probabilityPct}%`}
             icon={<SpadeIcon className="h-6 w-6 text-accent" />}
             highlight
+          />
+          <Stat
+            key={`avg-${averageRoundsText}`}
+            label="Average rounds until win"
+            value={averageRoundsText}
+            icon={<ChipIcon className="h-6 w-6 text-accent" />}
           />
           <Stat
             key={`expected-${expectedText}`}
@@ -156,4 +165,3 @@ function AccentBar() {
     />
   );
 }
-

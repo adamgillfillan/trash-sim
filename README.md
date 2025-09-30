@@ -25,9 +25,21 @@ Most scripts run across workspaces from the repo root:
 
 ```bash
 npm run dev       # Starts the web client in dev mode (proxy to @trash-sim/web)
-npm test          # Runs Vitest in game-core and placeholder scripts elsewhere
+npm test          # Runs Vitest across game-core, CLI, and web workspaces
 npm run build     # Builds the game core, CLI, and web app
 npm run lint      # Lints all workspaces (if eslint configs are present)
+```
+
+### Tests
+
+All workspaces ship with Vitest suites, and the web app includes Playwright smoke coverage.
+
+```bash
+npm run test --workspace @trash-sim/game-core   # Core simulation unit tests
+npm run test --workspace @trash-sim/cli         # CLI unit tests
+npm run test --workspace @trash-sim/web         # Web UI unit/integration tests (jsdom)
+npm run test:e2e --workspace @trash-sim/web     # Playwright UI smoke tests (requires npx playwright install)
+npm run test:e2e --workspace @trash-sim/cli     # CLI spawn-based end-to-end tests
 ```
 
 ### Game Core
@@ -51,10 +63,18 @@ The CLI prints:
 - Total runs and wins
 - Estimated probability (%)
 - Expected games to first success (`1/p` when available)
+- Average rounds until win (successful runs only)
 - Wilson 95% confidence interval
 - Runtime in seconds
 
 If `--out <file>` is supplied, a JSON summary file is written containing the same metrics plus the rules identifier.
+
+Run the CLI test suites directly if you are iterating on its behaviour:
+
+```bash
+npm run test --workspace @trash-sim/cli     # Argument parsing & formatter coverage
+npm run test:e2e --workspace @trash-sim/cli # Spawns the CLI via tsx
+```
 
 ### Web UI
 
@@ -77,7 +97,7 @@ npm run build --workspace @trash-sim/web
 npx serve apps/web/dist   # or vercel dev, etc.
 ```
 
-The UI supports theme switching via daisyUI (including the felt-inspired "Table Felt" default) and runs simulations (up to ~100k runs) on demand without a worker. Results include probability, expected games, confidence interval, and runtime. The layout keeps the settings panel and results summary in a single viewport so you can review the full output without scrolling, and there is space reserved to add more configuration fields or result tiles later. By default the model tracks how often a single player completes a perfect first round (fills every slot without drawing additional cards).
+The UI supports theme switching via daisyUI (including the felt-inspired "Table Felt" default) and runs simulations (up to ~100k runs) on demand without a worker. Results include probability, average rounds until win, expected games, confidence interval, and runtime. The layout keeps the settings panel and results summary in a single viewport so you can review the full output without scrolling, and there is space reserved to add more configuration fields or result tiles later. By default the model tracks how often a single player completes a perfect first round (fills every slot without drawing additional cards).
 
 ## Deployment (Vercel)
 

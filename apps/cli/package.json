@@ -10,7 +10,9 @@
     "start": "tsx src/index.ts",
     "lint": "eslint \"src/**/*.ts\"",
     "format": "prettier --write \"src/**/*.ts\"",
-    "test": "node -e \"console.log('No tests for CLI yet')\""
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "vitest run --dir src/__tests__/cli-e2e"
   },
   "dependencies": {
     "@trash-sim/game-core": "0.1.0"

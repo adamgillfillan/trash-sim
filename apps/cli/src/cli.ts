@@ -1,16 +1,14 @@
-#!/usr/bin/env node
-
 import { writeFile } from 'node:fs/promises';
 import { stderr, stdout } from 'node:process';
 import { defaultConfig, runBatch } from '@trash-sim/game-core';
 import type { BatchResult } from '@trash-sim/game-core';
 
-interface CliOptions {
+export interface CliOptions {
   runs: number;
   outFile?: string;
 }
 
-interface ParsedArgs {
+export interface ParsedArgs {
   options?: CliOptions;
   error?: string;
   showHelp?: boolean;
@@ -18,7 +16,7 @@ interface ParsedArgs {
 
 const RULES_ID = 'jack-wild-discard';
 
-async function main(): Promise<void> {
+export async function main(): Promise<void> {
   const parsed = parseArgs(process.argv.slice(2));
 
   if (parsed.showHelp) {
@@ -57,7 +55,7 @@ async function main(): Promise<void> {
   }
 }
 
-function parseArgs(argv: string[]): ParsedArgs {
+export function parseArgs(argv: string[]): ParsedArgs {
   if (argv.includes('--help') || argv.includes('-h')) {
     return { showHelp: true };
   }
@@ -110,7 +108,7 @@ function parseArgs(argv: string[]): ParsedArgs {
   };
 }
 
-function buildHelp(): string {
+export function buildHelp(): string {
   return [
     'Trash Simulator CLI',
     '',
@@ -128,7 +126,7 @@ function buildHelp(): string {
   ].join('\n');
 }
 
-interface SummaryInput {
+export interface SummaryInput {
   runs: number;
   successes: number;
   probability: number;
@@ -138,12 +136,12 @@ interface SummaryInput {
   elapsedMs: number;
 }
 
-function formatSummary(input: SummaryInput): string {
+export function formatSummary(input: SummaryInput): string {
   const probabilityPct = (input.probability * 100).toFixed(4);
-  const expectedText = input.expectedGamesToSuccess
+  const expectedText = input.expectedGamesToSuccess !== null
     ? input.expectedGamesToSuccess.toFixed(2)
     : 'Not enough successes';
-  const averageRoundsText = input.averageRoundsToWin
+  const averageRoundsText = input.averageRoundsToWin !== null
     ? input.averageRoundsToWin.toFixed(2)
     : 'Not enough wins';
   const ciText = input.confidenceInterval
@@ -162,7 +160,7 @@ function formatSummary(input: SummaryInput): string {
   ].join('\n');
 }
 
-function buildJsonPayload(runs: number, results: BatchResult) {
+export function buildJsonPayload(runs: number, results: BatchResult) {
   return {
     rules: RULES_ID,
     runs,
@@ -174,5 +172,3 @@ function buildJsonPayload(runs: number, results: BatchResult) {
     generatedAt: new Date().toISOString(),
   };
 }
-
-await main();

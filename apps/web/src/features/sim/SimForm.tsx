@@ -34,6 +34,7 @@ export default function SimForm({ defaultRuns, loading, onSubmit, className }: S
 
   return (
     <form
+      noValidate
       onSubmit={handleSubmit}
       className={`relative flex h-full flex-col overflow-hidden rounded-3xl border border-base-300/60 bg-base-200/95 text-base-content shadow-[0_18px_40px_rgba(7,25,15,0.45)] backdrop-blur-sm ${className ?? ""}`}
     >
@@ -84,7 +85,7 @@ export default function SimForm({ defaultRuns, loading, onSubmit, className }: S
         </div>
 
         {validationError ? (
-          <div className="alert border border-warning/50 bg-warning/15 text-warning-content">
+          <div role="alert" className="alert border border-warning/50 bg-warning/15 text-warning-content">
             <span>{validationError}</span>
           </div>
         ) : null}

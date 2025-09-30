@@ -6,7 +6,7 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "types": ["vite/client"]
+    "types": ["vite/client", "vitest", "@testing-library/jest-dom"]
   },
-  "include": ["src", "vite.config.ts", "tailwind.config.ts", "postcss.config.cjs"]
+  "include": ["src", "vite.config.ts", "tailwind.config.ts", "postcss.config.cjs", "playwright.config.ts", "tests"]
 }

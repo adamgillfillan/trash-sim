@@ -77,10 +77,14 @@ export default function App() {
 }
 
 function runSimulation(runs: number): Promise<BatchResult> {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     window.setTimeout(() => {
-      const batch = runBatch({ runs, config: defaultConfig });
-      resolve(batch);
+      try {
+        const batch = runBatch({ runs, config: defaultConfig });
+        resolve(batch);
+      } catch (error) {
+        reject(error);
+      }
     }, 10);
   });
 }
