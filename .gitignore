@@ -6,3 +6,4 @@ build/
 *.log
 pnpm-lock.yaml
 yarn.lock
+results.json
