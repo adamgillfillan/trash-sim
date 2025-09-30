@@ -32,26 +32,44 @@ export function simulateFirstTurnFromDeck(
   const deck = [...shuffledDeck];
   const state = initialiseState(deck, config);
 
-  let currentCard = drawNextCard(state, config);
+  let drawsTaken = 0;
+  let firstTurnPerfect = true;
+
+  const drawWithCount = (): Card | null => {
+    const card = drawNextCard(state, config);
+    if (card !== null) {
+      drawsTaken += 1;
+    }
+    return card;
+  };
+
+  let currentCard = drawWithCount();
 
   while (currentCard !== null) {
     const slotIndex = chooseSlot(currentCard, state, config);
 
     if (slotIndex === null) {
+      firstTurnPerfect = false;
       state.discardTop = currentCard;
-      return { firstTurnPerfect: false };
+      currentCard = drawWithCount();
+      continue;
     }
 
     const revealedCard = placeCardIntoSlot(currentCard, slotIndex, state);
 
     if (state.slotsFilled === config.boardSize) {
-      return { firstTurnPerfect: true };
+      return { firstTurnPerfect, drawsTaken, boardCompleted: true };
     }
 
-    currentCard = revealedCard ?? drawNextCard(state, config);
+    if (revealedCard !== null && revealedCard !== undefined) {
+      currentCard = revealedCard;
+      continue;
+    }
+
+    currentCard = drawWithCount();
   }
 
-  return { firstTurnPerfect: false };
+  return { firstTurnPerfect: false, drawsTaken, boardCompleted: false };
 }
 
 export function runBatch(options: BatchOptions): BatchResult {
@@ -63,20 +81,29 @@ export function runBatch(options: BatchOptions): BatchResult {
       successes: 0,
       probability: 0,
       expectedGamesToSuccess: null,
+      averageRoundsToWin: null,
       confidenceInterval95: null,
     };
   }
 
   let successes = 0;
+  let wins = 0;
+  let totalDrawsToWin = 0;
+
   for (let i = 0; i < runs; i += 1) {
     const result = simulateFirstTurn(config, rng);
     if (result.firstTurnPerfect) {
       successes += 1;
     }
+    if (result.boardCompleted) {
+      wins += 1;
+      totalDrawsToWin += result.drawsTaken;
+    }
   }
 
   const probability = successes / runs;
   const expectedGamesToSuccess = probability > 0 ? 1 / probability : null;
+  const averageRoundsToWin = wins > 0 ? totalDrawsToWin / wins : null;
   const confidenceInterval95 = computeWilsonInterval(successes, runs);
 
   return {
@@ -84,6 +111,7 @@ export function runBatch(options: BatchOptions): BatchResult {
     successes,
     probability,
     expectedGamesToSuccess,
+    averageRoundsToWin,
     confidenceInterval95,
   };
 }

@@ -10,6 +10,8 @@ export interface SimulationConfig {
 
 export interface SimulationResult {
   firstTurnPerfect: boolean;
+  drawsTaken: number;
+  boardCompleted: boolean;
 }
 
 export interface BatchOptions {
@@ -23,5 +25,6 @@ export interface BatchResult {
   successes: number;
   probability: number;
   expectedGamesToSuccess: number | null;
+  averageRoundsToWin: number | null;
   confidenceInterval95: [number, number] | null;
 }

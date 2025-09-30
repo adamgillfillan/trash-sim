@@ -24,6 +24,8 @@ describe('simulateFirstTurnFromDeck', () => {
     const result = simulateFirstTurnFromDeck(deck, defaultConfig);
 
     expect(result.firstTurnPerfect).toBe(true);
+    expect(result.boardCompleted).toBe(true);
+    expect(result.drawsTaken).toBe(1);
   });
 
   it('returns false when the first card is unplaceable', () => {
@@ -45,6 +47,8 @@ describe('simulateFirstTurnFromDeck', () => {
     const result = simulateFirstTurnFromDeck(deck, defaultConfig);
 
     expect(result.firstTurnPerfect).toBe(false);
+    expect(result.boardCompleted).toBe(false);
+    expect(result.drawsTaken).toBeGreaterThan(0);
   });
 
   it('fails when a revealed card duplicates a filled slot', () => {
@@ -66,6 +70,8 @@ describe('simulateFirstTurnFromDeck', () => {
     const result = simulateFirstTurnFromDeck(deck, defaultConfig);
 
     expect(result.firstTurnPerfect).toBe(false);
+    expect(result.boardCompleted).toBe(false);
+    expect(result.drawsTaken).toBeGreaterThan(0);
   });
 });
 
@@ -82,9 +88,15 @@ describe('runBatch', () => {
     if (expected.firstTurnPerfect) {
       expect(batch.successes).toBe(10);
       expect(batch.probability).toBe(1);
+      expect(batch.averageRoundsToWin).toBe(expected.drawsTaken);
     } else {
       expect(batch.successes).toBe(0);
       expect(batch.probability).toBe(0);
+      if (expected.boardCompleted) {
+        expect(batch.averageRoundsToWin).toBe(expected.drawsTaken);
+      } else {
+        expect(batch.averageRoundsToWin).toBeNull();
+      }
     }
 
     expect(batch.runs).toBe(10);
