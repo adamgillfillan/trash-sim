@@ -58,8 +58,6 @@ export default function SimResult({ result, loading, className }: SimResultProps
   const averageRoundsText = batch.averageRoundsToWin !== null
     ? batch.averageRoundsToWin.toFixed(2)
     : "Not enough wins";
-  const [ciLow, ciHigh] = batch.confidenceInterval95 ?? [null, null];
-  const ciText = ciLow !== null && ciHigh !== null ? `${(ciLow * 100).toFixed(4)}% - ${(ciHigh * 100).toFixed(4)}%` : "n/a";
 
   return (
     <section className={composedClassName}>
@@ -104,12 +102,6 @@ export default function SimResult({ result, loading, className }: SimResultProps
             label="Expected games until first perfect round"
             value={expectedText}
             icon={<DiamondIcon className="h-6 w-6 text-accent" />}
-          />
-          <Stat
-            key={`ci-${ciText}`}
-            label="95% confidence interval"
-            value={ciText}
-            icon={<ClubIcon className="h-6 w-6 text-accent" />}
           />
           <Stat
             key={`wins-${batch.successes}`}
