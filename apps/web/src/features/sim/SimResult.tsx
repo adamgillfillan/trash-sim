@@ -44,7 +44,7 @@ export default function SimResult({ result, loading, className }: SimResultProps
           <div className="flex flex-col gap-2">
             <h2 className="text-2xl font-semibold">Results</h2>
             <p className="text-base-content/70">
-              Run simulations here to estimate how many games you should expect to play before hitting a perfect first round with no extra draws. The numbers will pop in as soon as dealing finishes.
+              Run simulations here to see how often you open with a perfect first round and how many draw rounds a typical win requires once you keep playing. The numbers will pop in as soon as dealing finishes.
             </p>
           </div>
         </div>
@@ -80,8 +80,8 @@ export default function SimResult({ result, loading, className }: SimResultProps
         </div>
 
         <p className="text-sm text-base-content/70">
-          A "perfect" game fills every slot on the opening round with no extra draws. These stats reflect how often that happened
-          in the simulated games.
+          A "perfect" game fills every slot on the opening round with no extra draws. When the opener stalls we keep drawing, and each
+          draw counts as a new round. Use the metrics below to see both how rare a perfect opener is and how many draw rounds a completed game usually needs.
         </p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-[repeat(auto-fit,minmax(15rem,1fr))]">
           <Stat
@@ -93,7 +93,7 @@ export default function SimResult({ result, loading, className }: SimResultProps
           />
           <Stat
             key={`avg-${averageRoundsText}`}
-            label="Average rounds until win"
+            label="Average draw rounds until win"
             value={averageRoundsText}
             icon={<ChipIcon className="h-6 w-6 text-accent" />}
           />

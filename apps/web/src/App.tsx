@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { defaultConfig, runBatch } from "@trash-sim/game-core";
 import ThemeToggle from "./components/ThemeToggle";
 import SimForm from "./features/sim/SimForm";
@@ -49,7 +49,7 @@ export default function App() {
               </span>
               <h1 className="mt-3 text-3xl font-semibold sm:text-[2.15rem]">Trash Simulator</h1>
               <p className="mt-1 text-base-content/70">
-                Estimate how many Trash games you need to play before hitting a perfect first round with no extra draws.
+                Estimate how many Trash games you need to play before hitting a perfect first round and how many draw rounds a typical win needs once the opener stalls.
               </p>
               <p className="mt-2 text-sm text-base-content/60">
                 Assumes a single player, Jacks wild, Queens/Kings dead, and a face-up discard to start.
@@ -88,4 +88,5 @@ function runSimulation(runs: number): Promise<BatchResult> {
     }, 10);
   });
 }
+
 
