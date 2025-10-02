@@ -17,7 +17,7 @@ describe('SimResult', () => {
 
     expect(screen.getByRole('heading', { name: 'Results' })).toBeVisible();
     expect(
-      screen.getByText(/run simulations here to estimate/i),
+      screen.getByText(/run simulations here to see how often/i),
     ).toBeVisible();
   });
 
@@ -48,9 +48,14 @@ describe('SimResult', () => {
     expect(screen.getByText('45.6789%')).toBeVisible();
     expect(screen.getByText('3.40')).toBeVisible();
     expect(screen.getByText('2.50')).toBeVisible();
-    expect(screen.getByText('30.0000% - 60.0000%')).toBeVisible();
     expect(screen.getByText('123')).toBeVisible();
-    expect(screen.getByText('Average rounds until win')).toBeVisible();
+    expect(screen.getByText('Perfect round probability')).toBeVisible();
+    expect(
+      screen.getByText('Average draw rounds until win'),
+    ).toBeVisible();
+    expect(
+      screen.getByText('Expected games until first perfect round'),
+    ).toBeVisible();
   });
 
   it('shows the in-progress badge when still calculating', () => {
